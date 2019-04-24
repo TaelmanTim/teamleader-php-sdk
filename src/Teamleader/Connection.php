@@ -222,7 +222,7 @@ class Connection
     /**
      * @throws ApiException
      */
-    protected function acquireAccessToken(): void
+    public function acquireAccessToken(): void
     {
         if (empty($_GET['code'])) {
             $this->authorizeRedirect();
