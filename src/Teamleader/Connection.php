@@ -33,42 +33,42 @@ class Connection
     /**
      * @var string
      */
-    private $apiUrl = 'https://api.teamleader.eu';
+    protected $apiUrl = 'https://api.teamleader.eu';
 
     /**
      * @var string
      */
-    private $authUrl = 'https://app.teamleader.eu/oauth2/authorize';
+    protected $authUrl = 'https://app.teamleader.eu/oauth2/authorize';
 
     /**
      * @var string
      */
-    private $tokenUrl = 'https://app.teamleader.eu/oauth2/access_token';
+    protected $tokenUrl = 'https://app.teamleader.eu/oauth2/access_token';
 
     /**
      * @var string
      */
-    private $clientId;
+    protected $clientId;
 
     /**
      * @var string
      */
-    private $clientSecret;
+    protected $clientSecret;
 
     /**
      * @var string
      */
-    private $accessToken;
+    protected $accessToken;
 
     /**
      * @var string
      */
-    private $redirectUrl;
+    protected $redirectUrl;
 
     /**
      * @var GuzzleHttpClient
      */
-    private $client;
+    protected $client;
 
     /**
      * @var array Middlewares for the Guzzle 6 client
@@ -78,7 +78,7 @@ class Connection
     /**
      * @var CacheHandlerInterface
      */
-    private $cacheHandler;
+    protected $cacheHandler;
 
     public function __construct(CacheHandlerInterface $cacheHandler = null)
     {
@@ -136,7 +136,7 @@ class Connection
     /**
      * @return GuzzleHttpClient
      */
-    private function client(): GuzzleHttpClient
+    protected function client(): GuzzleHttpClient
     {
         if ($this->client) {
             return $this->client;
@@ -161,7 +161,7 @@ class Connection
     /**
      * @return string
      */
-    private function getAuthUrl(): string
+    protected function getAuthUrl(): string
     {
         $queryString = http_build_query(
             [
@@ -174,7 +174,7 @@ class Connection
         return $this->authUrl . '?' . $queryString;
     }
 
-    private function authorizeRedirect(): void
+    protected function authorizeRedirect(): void
     {
         $authUrl = $this->getAuthUrl();
         header('Location: ' . $authUrl);
@@ -184,7 +184,7 @@ class Connection
     /**
      * @throws ApiException
      */
-    private function acquireRefreshToken(): void
+    protected function acquireRefreshToken(): void
     {
         $body = [
             'form_params' => [
@@ -222,7 +222,7 @@ class Connection
     /**
      * @throws ApiException
      */
-    public function acquireAccessToken(): void
+    protected function acquireAccessToken(): void
     {
         if (empty($_GET['code'])) {
             $this->authorizeRedirect();
@@ -301,7 +301,7 @@ class Connection
      * @return Request
      * @throws ApiException
      */
-    private function createRequest(
+    protected function createRequest(
         string $method = 'GET',
         string $endpoint,
         $body = null,
@@ -378,7 +378,7 @@ class Connection
         }
     }
 
-    private function hasMoreData(array $json, Page $page): bool
+    protected function hasMoreData(array $json, Page $page): bool
     {
         return count($json['data'] ?? []) === $page->getSize();
     }
@@ -451,7 +451,7 @@ class Connection
      * @return mixed
      * @throws ApiException
      */
-    private function parseResponse(Response $response)
+    protected function parseResponse(Response $response)
     {
         try {
             Psr7\rewind_body($response);
@@ -471,7 +471,7 @@ class Connection
      * @throws TooManyRequestsException
      * @throws InvalidAccessTokenException
      */
-    private function parseExceptionForErrorMessages(Exception $exception): void
+    protected function parseExceptionForErrorMessages(Exception $exception): void
     {
         if ($exception instanceof InvalidAccessTokenException) {
             throw $exception;
@@ -505,7 +505,7 @@ class Connection
      *
      * @throws TooManyRequestsException
      */
-    private function checkWhetherRateLimitHasBeenReached(ResponseInterface $response, string $errorMessage): void
+    protected function checkWhetherRateLimitHasBeenReached(ResponseInterface $response, string $errorMessage): void
     {
         $retryAfterHeaders = $response->getHeader('Retry-After');
         if ($response->getStatusCode() === 429 && count($retryAfterHeaders) > 0) {
@@ -525,7 +525,7 @@ class Connection
      *
      * @return string
      */
-    private function formatUrl(string $url, string $method = 'get'): string
+    protected function formatUrl(string $url, string $method = 'get'): string
     {
         return $this->apiUrl . '/' . $url;
     }
