@@ -1,5 +1,5 @@
 {
-    "name": "janhenkes/teamleader-php-sdk",
+    "name": "timtaelman/teamleader-php-sdk",
     "type": "library",
     "description": "Teamleader API v2 PHP SDK",
     "keywords": ["teamleader"],
