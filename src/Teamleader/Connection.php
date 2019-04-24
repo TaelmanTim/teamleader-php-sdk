@@ -184,7 +184,7 @@ class Connection
     /**
      * @throws ApiException
      */
-    protected function acquireRefreshToken(): void
+    public function acquireRefreshToken(): void
     {
         $body = [
             'form_params' => [
