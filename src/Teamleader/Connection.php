@@ -301,7 +301,7 @@ class Connection
      * @return Request
      * @throws ApiException
      */
-    protected function createRequest(
+    public function createRequest(
         string $method = 'GET',
         string $endpoint,
         $body = null,
